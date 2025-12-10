@@ -5,6 +5,8 @@ const theme = {
     dark: "#000000",
     background: "#212121",
     text: "#fff",
+    light: "#fff",
+    neutral: "#c9c9c9",
   },
 
   fonts: {

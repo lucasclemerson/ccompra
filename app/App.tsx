@@ -1,10 +1,7 @@
 import "expo-router/entry";
 
 import { useFonts } from "expo-font";
-import { Slot } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-
-import { View, Text } from "react-native";
+import { View, ScrollView, Text} from "react-native";
 import NavBar from "./components/NavBar";
 import InitComponents from "./components/InitComponents";
 import theme from "./theme/theme";
@@ -17,16 +14,15 @@ export default function App() {
 
   if (!loaded) return null;
 
-  Text.defaultProps = Text.defaultProps || {};
-  Text.defaultProps.style = { fontFamily: "NunitoRegular" };
-
   return (
-    <>
-      <StatusBar style="light" /> 
-      <View style={{flex: 1, backgroundColor: theme.colors.background }}>
-        <NavBar />
+    <View style={{flex: 1, backgroundColor: theme.colors.light}}>
+      <NavBar />
+      <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         <InitComponents />
-      </View>
-    </>
+        <Text style={{ textAlign: "center", color: theme.colors.neutral, marginTop: 20 }}>
+          CCompra LTDA ©2025y. Todos os direitos reservados.
+        </Text>  
+      </ScrollView>  
+    </View>
   );
 }

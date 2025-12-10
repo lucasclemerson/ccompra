@@ -1,20 +1,52 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import theme from "../theme/theme";
 
 export default function InitComponents() {
   return (
     <View style={{padding: 20 }}>
-      <Text style={{ color: theme.colors.text, fontSize: 28, fontFamily: theme.fonts.regular}}>
-        Olá, Maria! como vai? Pronto para começar as compras?
+      <Text style={{ color: theme.colors.dark, fontSize: 35, fontFamily: theme.fonts.bold}}>
+        Olá, Maria!
+      </Text>
+      <Text style={{ marginBottom:40, color: theme.colors.dark, fontSize: 20, fontFamily: theme.fonts.regular}}>
+        Pronto para começar as compras?
       </Text>
 
-      <View style={{ borderRadius: 12, padding: 10, marginTop: 20, marginBottom:theme.spacing.sm, backgroundColor: theme.colors.text}}>
-        <Text style={{ textAlign:"center", paddingTop:10, paddingBottom:10, color: theme.colors.background, backgroundColor: theme.colors.text, fontSize: 24, fontFamily: theme.fonts.bold}}>
-            Orçamento do mês 100,00R$
+      <View style={{ backgroundColor: "#FF824C", borderRadius: 12, marginVertical: 20}}>
+        <Text style={{ color:theme.colors.light, textAlign:"center", paddingVertical: 20, fontSize: 26, fontFamily: theme.fonts.bold}}>
+            Orçamento do mês ***** R$
         </Text>
       </View>
-    
+
       <View style={styles.container}>
+        <Text style={{ width: "100%", textAlign:"start", paddingTop:0, paddingBottom:10, color: theme.colors.background, backgroundColor: theme.colors.text, fontSize: 26, fontFamily: theme.fonts.bold}}>
+            Escolha uma opção rápida
+        </Text>
+        
+        <View style={[styles.card, {backgroundColor: "#ff8"}]}>
+          <Image
+            source={require("../../assets/images/project/nova-compra.png")} 
+            style={{ marginBottom: 20, marginHorizontal: "auto", width: 50, height: 50, textAlign: "center"
+          }}/>
+          <Text style={[styles.title, { textAlign: "center"}]}>Lista de compras</Text>
+          <Text style={[styles.subtitle, { textAlign: "center"}]}>Altere apenas o que está em falta.</Text>
+        </View>
+
+        <View style={[styles.card, {backgroundColor: "#88f"}]}>
+          <Image
+            source={require("../../assets/images/project/cesta-de-compras.png")} 
+            style={{ marginBottom: 20, marginHorizontal: "auto", width: 50, height: 50, textAlign: "center"
+          }}/>
+          <Text style={[styles.title, { textAlign: "center", color:theme.colors.light}]}>Novo produto</Text>
+          <Text style={[styles.subtitle, { textAlign: "center", color:theme.colors.light}]}>Altere apenas o que está em falta.</Text>
+        </View>
+      </View>
+    
+
+
+      <View style={styles.container}>
+        <Text style={{ width: "100%", textAlign:"start", paddingTop:0, paddingBottom:10, color: theme.colors.background, backgroundColor: theme.colors.text, fontSize: 26, fontFamily: theme.fonts.bold}}>
+            Melhores categorias
+        </Text>
 
         {/* Produto de Limpeza */}
         <View style={styles.card}>
@@ -62,7 +94,7 @@ const styles = StyleSheet.create({
     gap: 10,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-center",
+    justifyContent: "space-between",
   },
   card: {
     width: "48%",          // duas colunas
@@ -72,7 +104,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: "#f1f5f9",
     elevation: 3,
-    marginBottom: 15,
+    marginBottom: 0,
   },
   title: {
     fontSize: 18,
