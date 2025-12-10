@@ -2,8 +2,14 @@ const theme = {
   colors: {
     primary: "#3b82f6",
     secondary: "#0ea5e9",
-    background: "#ffffff",
-    text: "#111827",
+    dark: "#000000",
+    background: "#212121",
+    text: "#fff",
+  },
+
+  fonts: {
+    regular: "NunitoRegular",
+    bold: "NunitoSemiBold",
   },
 
   spacing: {
