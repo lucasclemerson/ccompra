@@ -7,6 +7,9 @@ const theme = {
     text: "#fff",
     light: "#fff",
     neutral: "#c9c9c9",
+    success: "#16a34a",
+    warning: "#facc15",
+    error: "#ef4444",
   },
 
   fonts: {
