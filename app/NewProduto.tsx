@@ -1,40 +1,169 @@
-import { useState } from "react";
 
-import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { useFonts } from "expo-font";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import NavBarDefault from "./components/NavBarDefault";
 import theme from "./theme/theme";
+import { useRouter } from "expo-router";
+
+import { fetchCategorias, saveProduto } from './ApiRequest'; 
 
 export default function App() {
-
-  
   const router = useRouter();
-
+  
   const [loaded] = useFonts({
     NunitoRegular: require("../assets/fonts/Nunito/static/Nunito-Regular.ttf"),
     NunitoSemiBold: require("../assets/fonts/Nunito/static/Nunito-SemiBold.ttf"),
   });
 
-  if (!loaded) return null;
+  const [nome, setNome] = useState("");
+  const [categoriaId, setCategoriaId] = useState(null); 
+  const [quantidadeIdeal, setQuantidadeIdeal] = useState("");
+  const [preco, setPreco] = useState("");
 
+  const [categorias, setCategorias] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
+  const [open, setOpen] = useState(false); // Gerencia se o dropdown está aberto/fechado
   
-  const salvarProduto = () => {
-    if (!nome || !categoria || !quantidadeIdeal || !preco) {
+  // Mapeamos os itens para o formato que o DropDownPicker espera ({label: 'Nome', value: 1})
+  const [items, setItems] = useState([]); 
+
+  const loadCategorias = async () => {
+    try {
+      const data = await fetchCategorias(); 
+      
+      setCategorias(data);
+    
+      const mappedItems = data.map(cat => ({
+          label: cat.nome,
+          value: cat.id
+      }));
+
+      if (mappedItems.length > 0) {
+        setCategoriaId(mappedItems[0].value); 
+      }
+
+      setItems(mappedItems);
+    } catch (error) {
+      // O tratamento de erro já foi feito em apiService, mas você pode adicionar mais aqui
+      alert("Não foi possível carregar as categorias.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const salvarProduto = async () => {
+    // ... (validação inicial) ...
+    if (!nome || !categoriaId || !quantidadeIdeal || !preco) {
       alert("Preencha todos os campos!");
       return;
     }
-    alert("Produto cadastrado com sucesso!");
-    router.back(); 
-  };
-  
+    // Prepara os dados no formato que a API espera
+    const dadosProduto = {
+      nome,
+      quantidade_unidades: parseInt(quantidadeIdeal),
+      preco: String(preco.replace(',', '.')), 
+      idCategoria: categoriaId,
+    };
 
-  const [nome, setNome] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [quantidadeIdeal, setQuantidadeIdeal] = useState("");
-  const [preco, setPreco] = useState("");
+    try {
+      const novoProduto = await saveProduto(dadosProduto); // Chama a função da API
+      alert("Produto cadastrado com sucesso!");
+      router.push("/App"); 
+    } catch (error) {
+      alert("Erro ao salvar o produto.");
+    }
+  };
+  /*
+  const salvarProduto = async () => {
+    if (!nome || !categoriaId || !quantidadeIdeal || !preco) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+    // Prepara os dados no formato que a API espera
+    const dadosProduto = {
+      nome,
+      quantidade_unidades: parseInt(quantidadeIdeal),
+      preco: String(preco.replace(',', '.')), 
+      idCategoria: categoriaId,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/products`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(dadosProduto), 
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Produto cadastrado:", result);
+        alert("Produto cadastrado com sucesso!");
+        router.push("/App"); 
+      } else {
+        const errorData = await response.json();
+        console.error("Erro ao cadastrar:", errorData);
+        alert("Erro ao cadastrar produto. Verifique os dados e a API.");
+      }
+
+    } catch (error) {
+      // Erro de rede total (servidor offline, IP errado, etc)
+      console.error("Erro de rede:", error);
+      alert("Erro de conexão de rede. Servidor offline?");
+    }
+  }
+
+
+
+   // --- Função para carregar categorias da API ---
+  const loadCategorias = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/categories`);
+      
+      if (!response.ok) {
+        // Log de erro HTTP
+        alert("Erro HTTP Status: " + response.status); 
+        throw new Error('Falha ao carregar categorias');
+      }
+      const data = await response.json();
+      console.log("Dados recebidos:", data); // Log dos dados recebidos
+      
+      setCategorias(data);
+      // ... (restante do código)
+
+
+      const mappedItems = data.map(cat => ({
+          label: cat.nome,
+          value: cat.id
+      }));
+
+      if (mappedItems.length > 0) {
+        setCategoriaId(mappedItems[0].value); 
+      }
+
+      setItems(mappedItems);
+
+    } catch (error) {
+      console.error("Erro completo:", error); // Log do erro de rede
+      alert("Não foi possível carregar as categorias do servidor.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+*/
+  // Carrega as categorias quando o componente é montado
+  useEffect(() => {
+    loadCategorias();
+  }, []);
+
+  
+  if (!loaded) return null;
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.light}}>
@@ -50,12 +179,22 @@ export default function App() {
         />
 
         <Text style={styles.label}>Categoria</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ex: Bebidas"
-          value={categoria}
-          onChangeText={setCategoria}
-        />
+        {isLoading ? (
+            <ActivityIndicator size="small" color={theme.colors.dark} style={{ marginTop: 10 }} />
+        ) : (
+            <DropDownPicker
+                open={open}
+                value={categoriaId}
+                items={items}
+                setOpen={setOpen}
+                setValue={setCategoriaId}
+                setItems={setItems}
+                placeholder="Selecione uma categoria"
+                style={styles.dropdownStyle}
+                dropDownContainerStyle={styles.dropdownContainerStyle}
+                zIndex={1000} // Garante que o dropdown apareça acima de outros elementos
+            />
+        )}
 
         <Text style={styles.label}>Quantidade Ideal</Text>
         <TextInput
@@ -98,6 +237,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     borderWidth: 1,
     borderColor: "#ddd",
+    marginVertical: 5,
+  },
+  pickerContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    overflow: 'hidden', // Garante que o Picker respeite o borderRadius
   },
   botao: {
     backgroundColor: "#4A90E2",
@@ -111,4 +258,14 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: "700",
   },
+  dropdownStyle: {
+    backgroundColor: "#fff",
+    borderColor: "#ddd",
+    height: 50,
+    marginVertical: 5,
+  },
+  dropdownContainerStyle: {
+    borderColor: "#ddd",
+    backgroundColor: "#fff"
+  }
 });

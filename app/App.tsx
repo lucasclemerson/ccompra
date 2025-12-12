@@ -1,5 +1,4 @@
 import "expo-router/entry";
-
 import { useFonts } from "expo-font";
 import { View, ScrollView, Text, ActivityIndicator} from "react-native";
 import NavBar from "./components/NavBar";
@@ -7,43 +6,39 @@ import InitComponents from "./components/InitComponents";
 import theme from "./theme/theme";
 
 
+import { checkApiConnection } from './ApiRequest'; 
 import { useEffect, useState } from "react";
 
+
 export default function App() {
+
+
   const [loaded] = useFonts({
     NunitoRegular: require("../assets/fonts/Nunito/static/Nunito-Regular.ttf"),
     NunitoSemiBold: require("../assets/fonts/Nunito/static/Nunito-SemiBold.ttf"),
   });
 
-  if (!loaded) return null;
 
   {/* --- CONEXÃO COM A API--- */}
-  const API_BASE_URL = 'http://192.168.0.8:8000/api'; 
   const [connectionStatus, setConnectionStatus] = useState('loading'); // loading | success | error
   const [message, setMessage] = useState('Verificando conexão com a API...');
 
-  const checkApiConnection = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/health`);
 
-      if (response.ok) {
-        // Sucesso na conexão
-        setConnectionStatus('success');
-        setMessage('Conexão com a API OK!');
-      } else {
-        // Erro HTTP (404, 500)
-        setConnectionStatus('error');
-        setMessage(`Falha na conexão. Status HTTP: ${response.status}`);
-      }
-    } catch (error) {
-      // Erro de rede total
+  const handleApiCheck = async () => {
+    setMessage('Verificando conexão com a API...');
+    const isConnected = await checkApiConnection();
+
+    if (isConnected) {
+      setConnectionStatus('success');
+      setMessage('Conexão com a API OK!');
+    } else {
       setConnectionStatus('error');
       setMessage('Erro de rede: Servidor inacessível ou URL incorreta.');
     }
   };
 
   useEffect(() => {
-    checkApiConnection();
+    handleApiCheck();
   }, []); // Executa apenas uma vez ao carregar o app
 
   // Define a cor do texto com base no status
@@ -52,6 +47,7 @@ export default function App() {
     connectionStatus === 'error' ? theme.colors.error : 
     theme.colors.warning;
 
+  if (!loaded) return null;
 
   return (
     <View style={{flex: 1, backgroundColor: theme.colors.light}}>
