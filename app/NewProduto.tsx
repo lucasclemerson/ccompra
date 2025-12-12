@@ -72,8 +72,8 @@ export default function App() {
 
     try {
       const novoProduto = await saveProduto(dadosProduto); // Chama a função da API
-      alert("Produto cadastrado com sucesso!");
-      router.push("/App"); 
+      alert("Produto cadastrado com sucesso!");  
+      router.back()
     } catch (error) {
       alert("Erro ao salvar o produto.");
     }
@@ -91,7 +91,7 @@ export default function App() {
     <View style={{flex: 1, backgroundColor: theme.colors.light}}>
       <NavBarDefault title="Adicionar Produto"/>
 
-      <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ padding: 20, backgroundColor: "#fff", flexGrow: 1 }}>
+      <ScrollView nestedScrollEnabled={false} contentContainerStyle={{ padding: 20, backgroundColor: "#fff", flexGrow: 1 }}>
         <Text style={styles.label}>Nome do Produto</Text>
         <TextInput
           style={styles.input}
