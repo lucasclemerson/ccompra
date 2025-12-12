@@ -62,7 +62,7 @@ export default function InitComponents() {
             style={{ marginBottom: 20, marginHorizontal: "auto", width: 50, height: 50, textAlign: "center"
           }}/>
           <Text style={[styles.title, { textAlign: "center"}]}>Lista de compras</Text>
-          <Text style={[styles.subtitle, { textAlign: "center"}]}>Altere apenas o que está em falta.</Text>
+          <Text style={[styles.subtitle, { textAlign: "center"}]}>Altere a lista antes das compras.</Text>
         </View>
 
         <TouchableOpacity style={[styles.card, {backgroundColor: "#88f"}]} onPress={() => router.push("/NewProduto")}>
@@ -71,7 +71,7 @@ export default function InitComponents() {
             style={{ marginBottom: 20, marginHorizontal: "auto", width: 50, height: 50, textAlign: "center"
           }}/>
           <Text style={[styles.title, { textAlign: "center", color:theme.colors.light}]}>Novo produto</Text>
-          <Text style={[styles.subtitle, { textAlign: "center", color:theme.colors.light}]}>Altere apenas o que está em falta.</Text>
+          <Text style={[styles.subtitle, { textAlign: "center", color:theme.colors.light}]}>Adicione apenas o que está em falta.</Text>
         </TouchableOpacity>
       </View>
 

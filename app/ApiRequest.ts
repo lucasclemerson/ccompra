@@ -1,6 +1,5 @@
 const API_BASE_URL = 'http://192.168.0.8:8000/api'; 
 
-
 interface Categoria {
   id: number;
   nome: string;
@@ -12,6 +11,10 @@ interface Produto {
   quantidade_unidades: number;
   preco: number;
   idCategoria: number;
+}
+
+export default()=> {
+  return false;
 }
 
 export const fetchCategorias = async (): Promise<Categoria[]> => {
@@ -53,7 +56,6 @@ export const saveProduto = async (produtoData: Produto): Promise<Produto> => {
   }
 };
 
-
 export const fetchProdutos = async (): Promise<Produto[]> => {
   try {
     const response = await fetch(`${API_BASE_URL}/products`);
@@ -67,7 +69,6 @@ export const fetchProdutos = async (): Promise<Produto[]> => {
     throw error;
   }
 };
-
 
 export const checkApiConnection = async (): Promise<boolean> => {
     try {
@@ -85,20 +86,3 @@ export const checkApiConnection = async (): Promise<boolean> => {
         return false;
     }
 };
-/*
-const checkApiConnection = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/health`);
-
-      if (response.ok) {
-        setConnectionStatus('success');
-        setMessage('Conexão com a API OK!');
-      } else {
-        setConnectionStatus('error');
-        setMessage(`Falha na conexão. Status HTTP: ${response.status}`);
-      }
-    } catch (error) {
-      setConnectionStatus('error');
-      setMessage('Erro de rede: Servidor inacessível ou URL incorreta.');
-    }
-};*/

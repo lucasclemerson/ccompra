@@ -1,6 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { useRouter } from "expo-router";
-import { View, Text, TouchableOpacity, Image, SafeAreaView  } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import theme from "../theme/theme";
 
 export default function NavBarDefault({ title }) {
@@ -11,7 +13,7 @@ export default function NavBarDefault({ title }) {
       <StatusBar style="dark"/>
       <View style={{ zIndex: 10, elevation: 5, padding: 20, backgroundColor: theme.colors.light, flexDirection: "row", alignItems: "center", justifyContent: "space-between",}}>
         <TouchableOpacity
-          onPress={() => router.push("/App")}
+          onPress={() => router.push("/Index")}
           style={{
             flexDirection: "row",
             paddingVertical: 12,

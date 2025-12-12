@@ -78,85 +78,7 @@ export default function App() {
       alert("Erro ao salvar o produto.");
     }
   };
-  /*
-  const salvarProduto = async () => {
-    if (!nome || !categoriaId || !quantidadeIdeal || !preco) {
-      alert("Preencha todos os campos!");
-      return;
-    }
-    // Prepara os dados no formato que a API espera
-    const dadosProduto = {
-      nome,
-      quantidade_unidades: parseInt(quantidadeIdeal),
-      preco: String(preco.replace(',', '.')), 
-      idCategoria: categoriaId,
-    };
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/products`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify(dadosProduto), 
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Produto cadastrado:", result);
-        alert("Produto cadastrado com sucesso!");
-        router.push("/App"); 
-      } else {
-        const errorData = await response.json();
-        console.error("Erro ao cadastrar:", errorData);
-        alert("Erro ao cadastrar produto. Verifique os dados e a API.");
-      }
-
-    } catch (error) {
-      // Erro de rede total (servidor offline, IP errado, etc)
-      console.error("Erro de rede:", error);
-      alert("Erro de conexão de rede. Servidor offline?");
-    }
-  }
-
-
-
-   // --- Função para carregar categorias da API ---
-  const loadCategorias = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/categories`);
-      
-      if (!response.ok) {
-        // Log de erro HTTP
-        alert("Erro HTTP Status: " + response.status); 
-        throw new Error('Falha ao carregar categorias');
-      }
-      const data = await response.json();
-      console.log("Dados recebidos:", data); // Log dos dados recebidos
-      
-      setCategorias(data);
-      // ... (restante do código)
-
-
-      const mappedItems = data.map(cat => ({
-          label: cat.nome,
-          value: cat.id
-      }));
-
-      if (mappedItems.length > 0) {
-        setCategoriaId(mappedItems[0].value); 
-      }
-
-      setItems(mappedItems);
-
-    } catch (error) {
-      console.error("Erro completo:", error); // Log do erro de rede
-      alert("Não foi possível carregar as categorias do servidor.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-*/
   // Carrega as categorias quando o componente é montado
   useEffect(() => {
     loadCategorias();
@@ -169,7 +91,7 @@ export default function App() {
     <View style={{flex: 1, backgroundColor: theme.colors.light}}>
       <NavBarDefault title="Adicionar Produto"/>
 
-      <ScrollView contentContainerStyle={{ padding: 20, backgroundColor: "#fff", flexGrow: 1 }}>
+      <ScrollView nestedScrollEnabled={true} contentContainerStyle={{ padding: 20, backgroundColor: "#fff", flexGrow: 1 }}>
         <Text style={styles.label}>Nome do Produto</Text>
         <TextInput
           style={styles.input}

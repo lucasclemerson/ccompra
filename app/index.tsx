@@ -10,9 +10,7 @@ import { checkApiConnection } from './ApiRequest';
 import { useEffect, useState } from "react";
 
 
-export default function App() {
-
-
+export default function Index() {
   const [loaded] = useFonts({
     NunitoRegular: require("../assets/fonts/Nunito/static/Nunito-Regular.ttf"),
     NunitoSemiBold: require("../assets/fonts/Nunito/static/Nunito-SemiBold.ttf"),
@@ -20,7 +18,7 @@ export default function App() {
 
 
   {/* --- CONEXÃO COM A API--- */}
-  const [connectionStatus, setConnectionStatus] = useState('loading'); // loading | success | error
+  const [connectionStatus, setConnectionStatus] = useState('loading'); 
   const [message, setMessage] = useState('Verificando conexão com a API...');
 
 
@@ -56,14 +54,13 @@ export default function App() {
         <InitComponents />
 
         <View style={{ marginTop: 20, alignItems: "center" }}>
-          {/* Mostra um indicador de carregamento enquanto aguarda */}
           {connectionStatus === 'loading' && <ActivityIndicator size="small" color={theme.colors.warning} />}
-          <Text style={{ color: statusColor, marginTop: 5 }}>
+          <Text style={{fontFamily: theme.fonts.bold, color: statusColor, marginTop: 5 }}>
             {message}
           </Text>
         </View>
 
-        <Text style={{ textAlign: "center", color: theme.colors.neutral, marginTop: 20 }}>
+        <Text style={{fontFamily: theme.fonts.bold, textAlign: "center", color: theme.colors.neutral, marginTop: 20 }}>
           CCompra LTDA ©2025y. Todos os direitos reservados.
         </Text>  
       </ScrollView>  
