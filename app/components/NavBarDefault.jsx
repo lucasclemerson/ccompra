@@ -13,7 +13,7 @@ export default function NavBarDefault({ title }) {
       <StatusBar style="dark"/>
       <View style={{ zIndex: 10, elevation: 5, padding: 20, backgroundColor: theme.colors.light, flexDirection: "row", alignItems: "center", justifyContent: "space-between",}}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => router.push("/")}
           style={{
             flexDirection: "row",
             paddingVertical: 12,

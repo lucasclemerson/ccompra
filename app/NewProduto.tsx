@@ -73,7 +73,7 @@ export default function App() {
     try {
       const novoProduto = await saveProduto(dadosProduto); // Chama a função da API
       alert("Produto cadastrado com sucesso!");  
-      router.back()
+      router.push("/");
     } catch (error) {
       alert("Erro ao salvar o produto.");
     }

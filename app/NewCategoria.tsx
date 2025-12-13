@@ -37,7 +37,7 @@ export default function App() {
     try {
       const novaCategoria = await saveCategoria(dadosCategoria); 
       alert("Categoria cadastrada com sucesso!");
-      router.back()
+      router.push("/");
     } catch (error) {
       alert("Erro ao salvar a categoria.");
       console.error("Erro ao salvar a categoria:", error);
