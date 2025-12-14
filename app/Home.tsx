@@ -4,13 +4,16 @@ import { View, ScrollView, Text, ActivityIndicator} from "react-native";
 import NavBar from "./components/NavBar";
 import InitComponents from "./components/InitComponents";
 import theme from "./theme/theme";
-
+import { useLocalSearchParams } from "expo-router";
 
 import { checkApiConnection } from './ApiRequest'; 
 import { useEffect, useState } from "react";
 
 
-export default function Index() {
+export default function Gome() {
+  const { nome, email, foto, password, token } = useLocalSearchParams();
+  
+
   const [loaded] = useFonts({
     NunitoRegular: require("../assets/fonts/Nunito/static/Nunito-Regular.ttf"),
     NunitoSemiBold: require("../assets/fonts/Nunito/static/Nunito-SemiBold.ttf"),
@@ -51,8 +54,7 @@ export default function Index() {
     <View style={{flex: 1, backgroundColor: theme.colors.light}}>
       <NavBar />
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-        <InitComponents />
-
+        <InitComponents/>
         <View style={{ marginTop: 20, alignItems: "center" }}>
           {connectionStatus === 'loading' && <ActivityIndicator size="small" color={theme.colors.warning} />}
           <Text style={{fontFamily: theme.fonts.bold, color: statusColor, marginTop: 5 }}>

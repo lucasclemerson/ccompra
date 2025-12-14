@@ -1,17 +1,13 @@
-import { Stack } from "expo-router";
-import { useState, useEffect } from "react";
-import Preloader from "./components/Preloader";
+import { View } from "moti";
+import { Button } from "@react-navigation/elements";
+import { Stack, useRouter } from "expo-router";
+import theme from "./theme/theme";
+
 
 export default function Layout() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1200); 
-  }, []);
-
-  if (loading) {
-    return <Preloader />;
-  }
+  const router = useRouter();
   
-  return <Stack screenOptions={{ headerShown: false }}/>;
+  return (
+    <Stack screenOptions={{ headerShown: false }} />
+  );
 }

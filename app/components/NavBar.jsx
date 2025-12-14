@@ -1,8 +1,16 @@
 import { StatusBar } from "expo-status-bar";
 import { View, TouchableOpacity, Image, SafeAreaView  } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import theme from "../theme/theme";
 
 export default function NavBar() {
+  const { nome, email, foto, password, token } = useLocalSearchParams();
+  
+  const profileImages = {
+    "man.png": require("../../assets/images/project/man.png"),
+    "woman.png": require("../../assets/images/project/woman.png"),
+  }
+  
   return (
     <SafeAreaView style={{ color:theme.colors.dark, backgroundColor: "#FFFFFF" }}>
       <StatusBar style="dark"/>
@@ -17,7 +25,7 @@ export default function NavBar() {
 
         <TouchableOpacity>
           <Image
-            source={require("../../assets/images/project/woman.png")} 
+            source={profileImages[foto] ?? profileImages["man.png"]}
             style={{ width: 40, height: 40,
               borderRadius: 20,
             }}

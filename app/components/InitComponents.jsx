@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
+
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from "react-native";
 import theme from "../theme/theme";
 
@@ -8,10 +9,14 @@ import { fetchCategorias } from '../ApiRequest';
 import { Button } from "@react-navigation/elements";
 
 export default function InitComponents() {
+
   const router = useRouter();
   const [showPrice, setShowPrice] = useState(true);  
   const fadeAnim = useRef(new Animated.Value(1)).current;
 
+
+  const { nome, email, foto, password, token } = useLocalSearchParams();
+  
   const togglePrice = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
@@ -32,10 +37,10 @@ export default function InitComponents() {
   
   const loadCategorias = async () => {
     try {
-      const data = await fetchCategorias(); 
+      const data = await fetchCategorias(token); 
       setCategorias(data);
     } catch (error) {
-      // O tratamento de erro já foi feito em apiService, mas você pode adicionar mais aqui
+      console.error(error)
       alert("Não foi possível carregar as categorias.");
     } finally {
       setIsLoading(false);
@@ -49,7 +54,7 @@ export default function InitComponents() {
   return (
     <View style={{padding: 20 }}>
       <Text style={{ color: theme.colors.dark, fontSize: 35, fontFamily: theme.fonts.bold}}>
-        Olá, Maria!
+        Olá, {nome.split(" ")[0]}!
       </Text>
       <Text style={{ marginBottom:10, color: theme.colors.dark, fontSize: 20, fontFamily: theme.fonts.regular}}>
         Pronto para começar as compras?

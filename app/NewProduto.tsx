@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
@@ -7,19 +6,21 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import NavBarDefault from "./components/NavBarDefault";
 import theme from "./theme/theme";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 import { fetchCategorias, saveProduto } from './ApiRequest'; 
 
 export default function App() {
   const router = useRouter();
+  const { nome, email, foto, password, token } = useLocalSearchParams();
+  
   
   const [loaded] = useFonts({
     NunitoRegular: require("../assets/fonts/Nunito/static/Nunito-Regular.ttf"),
     NunitoSemiBold: require("../assets/fonts/Nunito/static/Nunito-SemiBold.ttf"),
   });
 
-  const [nome, setNome] = useState("");
+  const [nomeProduto, setNomeProduto] = useState("");
   const [categoriaId, setCategoriaId] = useState(null); 
   const [quantidadeIdeal, setQuantidadeIdeal] = useState("");
   const [preco, setPreco] = useState("");
@@ -34,7 +35,7 @@ export default function App() {
 
   const loadCategorias = async () => {
     try {
-      const data = await fetchCategorias(); 
+      const data = await fetchCategorias(token); 
       
       setCategorias(data);
     
@@ -58,20 +59,20 @@ export default function App() {
 
   const salvarProduto = async () => {
     // ... (validação inicial) ...
-    if (!nome || !categoriaId || !quantidadeIdeal || !preco) {
+    if (!nomeProduto || !categoriaId || !quantidadeIdeal || !preco) {
       alert("Preencha todos os campos!");
       return;
     }
     // Prepara os dados no formato que a API espera
     const dadosProduto = {
-      nome,
+      nomeProduto,
       quantidade_unidades: parseInt(quantidadeIdeal),
       preco: String(preco.replace(',', '.')), 
       idCategoria: categoriaId,
     };
 
     try {
-      const novoProduto = await saveProduto(dadosProduto); // Chama a função da API
+      const novoProduto = await saveProduto(dadosProduto, token); // Chama a função da API
       alert("Produto cadastrado com sucesso!");  
       router.push("/");
     } catch (error) {
@@ -96,8 +97,8 @@ export default function App() {
         <TextInput
           style={styles.input}
           placeholder="Ex: Coca-Cola Lata"
-          value={nome}
-          onChangeText={setNome}
+          value={nomeProduto}
+          onChangeText={setNomeProduto}
         />
 
         <Text style={styles.label}>Categoria</Text>
@@ -114,7 +115,7 @@ export default function App() {
                 placeholder="Selecione uma categoria"
                 style={styles.dropdownStyle}
                 dropDownContainerStyle={styles.dropdownContainerStyle}
-                zIndex={1000} // Garante que o dropdown apareça acima de outros elementos
+                zIndex={1000} 
             />
         )}
 

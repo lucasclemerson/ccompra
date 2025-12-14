@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -7,13 +7,20 @@ import theme from "../theme/theme";
 
 export default function NavBarDefault({ title }) {
   
+  const { nome, email, foto, password, token } = useLocalSearchParams();
+  
+  const profileImages = {
+    "man.png": require("../../assets/images/project/man.png"),
+    "woman.png": require("../../assets/images/project/woman.png"),
+  }
+  
   const router = useRouter();
   return (
     <SafeAreaView style={{ color:theme.colors.dark, backgroundColor: "#FFFFFF" }}>
       <StatusBar style="dark"/>
       <View style={{ zIndex: 10, elevation: 5, padding: 20, backgroundColor: theme.colors.light, flexDirection: "row", alignItems: "center", justifyContent: "space-between",}}>
         <TouchableOpacity
-          onPress={() => router.push("/")}
+          onPress={() => router.push("/Home")}
           style={{
             flexDirection: "row",
             paddingVertical: 12,
@@ -33,7 +40,7 @@ export default function NavBarDefault({ title }) {
         </Text>
         <TouchableOpacity>
           <Image
-            source={require("../../assets/images/project/woman.png")} 
+            source={profileImages[foto] ?? profileImages["man.png"]}
             style={{ width: 40, height: 40,
               borderRadius: 20,
             }}
